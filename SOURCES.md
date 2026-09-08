@@ -1,32 +1,18 @@
-# Image and reference sources
+# Sources
 
-This project intentionally uses remote images so the repository stays small. Each image is framed in the UI and has a source link in its caption.
+## Academic basis
+- NCERT Class X Science textbook portal: https://ncert.nic.in/textbook.php?jesc1=6-8
+- Supplied chapter text: `How_Do_Organisms_Reproduce_Chapter_Text.txt`
 
-## Primary academic references
-- NCERT Exemplar: https://ncert.nic.in/exemplar-problems.php?ln=en
-- CBSE Curriculum Aligned Competency Based Test Items, Science Class 10: https://cbseacademic.nic.in/cbe/documents/SAS_Science-Class-10.pdf
-- NCERT chapter mirror/reference used for verification: https://philoid.com/ncert/chapter/jesc107
+## Image sources
+- DNA replication: Wikimedia Commons, “DNA replication.png” — https://commons.wikimedia.org/wiki/File:DNA_replication.png
+- Hydra budding: Wikimedia Commons, “Hydra Budding.svg” — https://commons.wikimedia.org/wiki/File:Hydra_Budding.svg
+- Female reproductive system: Wikimedia Commons, “Scheme female reproductive system-en.svg” — https://commons.wikimedia.org/wiki/File:Scheme_female_reproductive_system-en.svg
+- Puberty illustration: Wikimedia Commons, “Ilustrasi pertumbuhan remaja selama pubertas.png” — CC0 — https://commons.wikimedia.org/wiki/File:Ilustrasi_pertumbuhan_remaja_selama_pubertas.png
+- Seed germination: Wikimedia Commons, “Seed Germination.png” — https://commons.wikimedia.org/wiki/File:Seed_Germination.png
+- Menstrual cycle: Wikimedia Commons, “Menstrual cycle.svg”
+- Placenta: Wikimedia Commons, “Placenta system.svg”
+- Flower/pollination: Wikimedia Commons diagrams
+- Other educational diagrams: Teachoo / YaClass / Slideserve as linked in the HTML.
 
-## Hub design reference
-- Steve Hub: https://iam-steveee.github.io/hub
-- Hub source repository: https://github.com/iam-steveee/hub
-
-## Visual sources used in the page
-- DNA replication: Wikimedia Commons, DNA replication en.svg
-- Binary fission: Slideserve educational diagram
-- Multiple fission: Teachoo, Multiple Fission in Plasmodium
-- Fragmentation: YaClass, Fragmentation in Spirogyra
-- Regeneration: Embibe, Regeneration in Planaria
-- Budding: Wikimedia Commons, Hydra Budding.svg
-- Rhizopus: Wikimedia Commons, Structure of Rhizopus spp.-english.JPG
-- Vegetative propagation: Teachoo, Vegetative Propagation in Potato
-- Flower: Wikimedia Commons, Flordiagramnumbered.jpg
-- Pollination: Wikimedia Commons, Pollination Diagram.svg
-- Seed germination: Wikimedia Commons, Seed Germination.png
-- Male reproductive system: Wikimedia Commons, Human male reproductive system en.svg
-- Female reproductive system: Wikimedia Commons, Female reproductive system.svg
-- Placenta: Wikimedia Commons, Placenta system.svg
-- Puberty: Wikimedia Commons, Pubertaro.jpg
-- Menstrual cycle: Wikimedia Commons, Menstrual cycle.svg
-
-The two Steve introduction/warning memes and Steve logo are loaded from the Discord CDN URLs supplied by the site owner.
+Remote images are intentionally used to keep the GitHub repository lightweight.
