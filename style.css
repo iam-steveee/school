@@ -10,3 +10,21 @@ body:not(.intro-locked) .intro-screen{pointer-events:none}
 .intro-screen:not(.active){opacity:0}
 .meme-frame.image-missing:after{content:"Image could not be loaded";display:block;padding:24px;color:#777;font:11px "DM Mono",monospace}
 @media(prefers-reduced-motion:reduce){.intro-screen{transition:none}.reveal{transition:none}}
+
+
+/* One-page layout: introduction is part of the scrollable document. */
+.intro-section{
+  position:relative;
+  z-index:2;
+  min-height:100svh;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  padding:150px 18px 90px;
+  border-bottom:1px solid var(--line);
+}
+.intro-section .intro-inner{width:min(850px,100%);text-align:center}
+.intro-section .reveal{opacity:1;transform:none}
+@media(max-width:620px){
+  .intro-section{padding:125px 18px 70px;min-height:auto}
+}
