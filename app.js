@@ -1,41 +1,97 @@
 (() => {
-  const $ = (s, root = document) => root.querySelector(s);
-  const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+  'use strict';
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
   const screens = $$('.intro-screen');
   const main = $('#main');
-  $$('.continue-btn').forEach(btn => btn.addEventListener('click', () => {
-    const next = btn.dataset.next;
-    screens.forEach(s => s.classList.remove('active'));
-    if (next === 'main') {
-      main.classList.add('live');
-      document.body.style.overflow = '';
-      requestAnimationFrame(() => window.scrollTo({top:0, behavior:'instant'}));
-      revealAll();
-    } else {
-      $('#' + next).classList.add('active');
-    }
-  }));
-  function revealAll(){
-    $$('.reveal', main).forEach(el => {
-      const r = el.getBoundingClientRect();
-      if (r.top < innerHeight * .95) el.classList.add('visible');
+  const backTop = $('#backTop');
+
+  // The chapter is always present underneath the intro screens. This is more
+  // reliable than toggling display:none/display:block on GitHub Pages and
+  // prevents a blank page if a browser handles the transition oddly.
+  document.body.classList.add('intro-locked');
+
+  function showScreen(id) {
+    screens.forEach(screen => screen.classList.toggle('active', screen.id === id));
+  }
+
+  function enterChapter() {
+    screens.forEach(screen => screen.classList.remove('active'));
+    document.body.classList.remove('intro-locked');
+    if (main) main.classList.add('live');
+    window.scrollTo(0, 0);
+    revealVisible();
+  }
+
+  $$('.continue-btn').forEach(button => {
+    button.addEventListener('click', event => {
+      event.preventDefault();
+      const next = button.dataset.next;
+      if (next === 'main') {
+        enterChapter();
+      } else if (next && document.getElementById(next)) {
+        showScreen(next);
+        window.scrollTo(0, 0);
+      }
+    });
+  });
+
+  function revealVisible() {
+    $$('.reveal', main || document).forEach(element => {
+      const rect = element.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 1.08) element.classList.add('visible');
     });
   }
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach(entry => { if(entry.isIntersecting){entry.target.classList.add('visible');obs.unobserve(entry.target);} });
-  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
-  $$('.reveal', main).forEach(el => observer.observe(el));
-  $$('[data-tilt]', main).forEach(card => {
-    if (!matchMedia('(pointer:fine)').matches) return;
-    card.addEventListener('pointermove', e => {
-      const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-      card.style.transform=`perspective(900px) rotateX(${(-y*3).toFixed(2)}deg) rotateY(${(x*3).toFixed(2)}deg)`;
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+    $$('.reveal', main || document).forEach(element => observer.observe(element));
+  } else {
+    $$('.reveal', main || document).forEach(element => element.classList.add('visible'));
+  }
+
+  // Subtle card tilt on mouse/trackpad devices only.
+  if (window.matchMedia && window.matchMedia('(pointer:fine)').matches) {
+    $$('[data-tilt]', main || document).forEach(card => {
+      card.addEventListener('pointermove', event => {
+        const rect = card.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+        card.style.transform = `perspective(900px) rotateX(${(-y * 3).toFixed(2)}deg) rotateY(${(x * 3).toFixed(2)}deg)`;
+      });
+      card.addEventListener('pointerleave', () => { card.style.transform = ''; });
     });
-    card.addEventListener('pointerleave',()=>card.style.transform='');
+  }
+
+  if (backTop) {
+    window.addEventListener('scroll', () => {
+      backTop.classList.toggle('show', window.scrollY > 700);
+    }, { passive: true });
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  }
+
+  // If an external diagram fails, keep the themed frame instead of leaving
+  // broken-image space.
+  $$('img').forEach(img => {
+    img.addEventListener('error', () => {
+      if (img.closest('.meme-frame')) {
+        img.style.display = 'none';
+        const frame = img.closest('.meme-frame');
+        frame.classList.add('image-missing');
+      }
+    });
   });
-  const backTop=$('#backTop');
-  addEventListener('scroll',()=>backTop.classList.toggle('show',scrollY>700),{passive:true});
-  backTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
-  // Keep the welcome overlay from locking the page before entry.
-  document.body.style.overflow='hidden';
+
+  // Initial reveal for the first viewport.
+  revealVisible();
 })();
